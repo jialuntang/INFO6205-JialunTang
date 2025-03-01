@@ -24,15 +24,12 @@ public class PriorityQueue<K> implements Iterable<K> {
         this.binHeap = (K[]) binHeap;
         this.floyd = floyd;
     }
-
     public PriorityQueue(int n, int first, boolean max, Comparator<K> comparator, boolean floyd) {
         this(max, new Object[n + first], first, 0, comparator, floyd);
     }
-
     public PriorityQueue(int n, boolean max, Comparator<K> comparator, boolean floyd) {
         this(n, 1, max, comparator, floyd);
     }
-
     public PriorityQueue(int n, boolean max, Comparator<K> comparator) {
         this(n, 1, max, comparator, false);
     }
@@ -54,12 +51,10 @@ public class PriorityQueue<K> implements Iterable<K> {
         binHeap[++last + first - 1] = key;
         swimUp(last + first - 1);
     }
-
     public K take() throws NoSuchElementException {
         if (isEmpty()) throw new NoSuchElementException("Priority queue is empty");
         return floyd ? doTake(this::snake) : doTake(this::sink);
     }
-
     private K doTake(Consumer<Integer> f) {
         K result = binHeap[first];
         swap(first, last-- + first - 1);
@@ -67,7 +62,6 @@ public class PriorityQueue<K> implements Iterable<K> {
         binHeap[last + first] = null;
         return result;
     }
-
     private void sink(int k) {
         doHeapify(k, (a, b) -> !unordered(a, b));
     }
@@ -83,7 +77,6 @@ public class PriorityQueue<K> implements Iterable<K> {
             i = parent(i);
         }
     }
-
     private boolean unordered(int i, int j) {
         return (comparator.compare(binHeap[i], binHeap[j]) > 0) ^ max;
     }
@@ -121,7 +114,6 @@ public class PriorityQueue<K> implements Iterable<K> {
         if (first > 0) result.next();
         return result;
     }
-
     public static void main(String[] args) {
         doMain();
     }
@@ -136,9 +128,6 @@ public class PriorityQueue<K> implements Iterable<K> {
         Iterable<Integer> PQ_int_floyd = new PriorityQueue<>(max, s2, 1, 5, Comparator.comparing(Integer::intValue), floyd);
         Iterable<Integer> PQ_int_nofloyd = new PriorityQueue<>(max, s2, 1, 5, Comparator.comparing(Integer::intValue), false);
         System.out.println("Start benchmark...");
-// run your benchmark
         System.out.println("Benchmark finished!");
-
     }
-
 }

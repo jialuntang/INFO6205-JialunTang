@@ -8,3 +8,7 @@
 2025-02-28 19:50:14.405 WARN  PQBenchmark - No word counts specified on the command line
 2025-02-28 20:17:20.845 INFO  PQBenchmark - SortBenchmark.main: null with word counts: []
 2025-02-28 20:17:20.846 WARN  PQBenchmark - No word counts specified on the command line
+2025-02-28 20:36:48.400 INFO  PQBenchmark - SortBenchmark.main: null with word counts: []
+2025-02-28 20:36:48.402 WARN  PQBenchmark - No word counts specified on the command line
+2025-02-28 21:09:53.416 INFO  PQBenchmark - SortBenchmark.main: null with word counts: []
+2025-02-28 21:09:53.417 WARN  PQBenchmark - No word counts specified on the command line

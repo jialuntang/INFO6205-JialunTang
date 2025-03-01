@@ -16,10 +16,8 @@ public class Benchmark_Timer<T> implements Benchmark<T> {
             fRun.accept(t);
             return t;
         };
-        // Warmup phase
         new Timer().repeat(getWarmupRuns(m), supplier, function, fPre, fPost);
 
-        // Timed phase
         return new Timer().repeat(m, supplier, function, fPre, fPost);
     }
 
