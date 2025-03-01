@@ -1,0 +1,5 @@
+The quadratic method (O(N^2)) first sorts the array and then the two-dimensional method can be used to efficiently find three numbers equal to zero.
+
+Instead of examining all possible combinations, such as the cubic method (O(N^3)), this method specifies one digit and uses the left and right symbols to find the other two digits, reducing unnecessary inspections.
+
+Since the two-point method runs in O(N) time for each integer, the total time complexity is O(N^2).

@@ -1,0 +1,13 @@
+com/phasmidsoftware/dsaipg/adt/bqs/StackTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/DListTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/ShuntingYardTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/UnorderedIteratorTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/Stack_LinkedListTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/ElementTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/BagTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/QueueTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/Queue_ArrayTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/DictionaryTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/LinkedListElementsTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/LinkedListTest.class
+com/phasmidsoftware/dsaipg/adt/bqs/LazyListTest.class
