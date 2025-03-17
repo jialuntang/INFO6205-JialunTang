@@ -38,46 +38,67 @@ final class ParSort {
      * @param from  the starting index (inclusive) of the portion of the array to be sorted
      * @param to    the ending index (exclusive) of the portion of the array to be sorted
      */
+
     public static void sort(int[] array, int from, int to) {
-        if (to - from >= cutoff) {
-            CompletableFuture<int[]> completableFuture1 = null;
-            CompletableFuture<int[]> completableFuture2 = null;
-            // TO BE IMPLEMENTED 
-            // END SOLUTION
-            CompletableFuture<int[]> completableFuture = completableFuture1.thenCombine(completableFuture2, ParSort::doMerge);
-            completableFuture.whenComplete((result, throwable) -> System.arraycopy(result, 0, array, from, result.length));
-            completableFuture.join();
-        } else
+       int size= to - from + 1;
+        if (size < cutoff) {
             Arrays.sort(array, from, to);
+        } else {
+            int mid = (from + to) / 2;
+
+            CompletableFuture<int[]> completableFuture1 = asyncSort(array, from, mid);
+            CompletableFuture<int[]> completableFuture2 = asyncSort(array, mid, to);
+            CompletableFuture<int[]> completableFuture = completableFuture1
+                    .thenCombine(completableFuture2, ParSort::doMerge);
+
+            completableFuture.whenComplete((result, throwable) -> {
+                if (throwable == null) {
+                    System.arraycopy(result, 0, array, from, result.length);
+                } else {
+                    throwable.printStackTrace();
+                }
+            });
+
+            completableFuture.join(); // Ensure parallel tasks are completed
+            }
     }
+        /**
+         * Recursively sorts a specified portion of the input array and returns a new sorted array.
+         * This method extracts the specified range, sorts it using a defined sorting mechanism,
+         * and provides the sorted result as a new array, leaving the input array unchanged.
+         *
+         * @param array the input array from which a portion will be sorted
+         * @param from  the starting index (inclusive) of the portion of the array to be sorted
+         * @param to    the ending index (exclusive) of the portion of the array to be sorted
+         * @return a new sorted array containing the elements from the specified range of the input array
+
+
+        **/
+        static int[] sortRecursive(int[] array, int from, int to) {
+            int[] result = Arrays.copyOfRange(array, from, to);
+            if (to - from < cutoff) {
+                Arrays.sort(result);
+                return result;
+            }
+
+            int mid = (to - from) / 2;
+
+            int[] left = sortRecursive(result, 0, mid);
+            int[] right = sortRecursive(result, mid, result.length);
+
+            return doMerge(left, right);
+        }
+
 
     /**
-     * Recursively sorts a specified portion of the input array and returns a new sorted array.
-     * This method extracts the specified range, sorts it using a defined sorting mechanism,
-     * and provides the sorted result as a new array, leaving the input array unchanged.
-     *
-     * @param array the input array from which a portion will be sorted
-     * @param from  the starting index (inclusive) of the portion of the array to be sorted
-     * @param to    the ending index (exclusive) of the portion of the array to be sorted
-     * @return a new sorted array containing the elements from the specified range of the input array
-     */
-    static int[] sortRecursive(int[] array, int from, int to) {
-        int[] result = new int[to - from];
-        // TO BE IMPLEMENTED 
-         // NOTE you need to do something here so that result is the sorted version of array.
-        // END SOLUTION
-        return result;
-    }
-
-    /**
-     * Merges two sorted arrays into a single sorted array.
-     * The method assumes that both input arrays are already sorted in ascending order,
-     * and combines them into a new sorted array.
-     *
-     * @param xs1 the first sorted input array
-     * @param xs2 the second sorted input array
-     * @return a new sorted array containing all elements from both input arrays
-     */
+         * Merges two sorted arrays into a single sorted array.
+         * The method assumes that both input arrays are already sorted in ascending order,
+         * and combines them into a new sorted array.
+         *
+         * @param xs1 the first sorted input array
+         * @param xs2 the second sorted input array
+         * @return a new sorted array containing all elements from both input arrays
+         */
     static int[] doMerge(int[] xs1, int[] xs2) {
         int[] result = new int[xs1.length + xs2.length];
         int i = 0;
@@ -91,19 +112,18 @@ final class ParSort {
         return result;
     }
 
+
     /**
-     * Asynchronously sorts the specified portion of the input array using a parallel sorting algorithm.
-     * This method extracts a subsection of the given array, sorts it, and returns a CompletableFuture
-     * containing the sorted portion of the array.
-     *
-     * @param array the input array to extract and sort
-     * @param from  the starting index (inclusive) of the portion of the array to be sorted
-     * @param to    the ending index (exclusive) of the portion of the array to be sorted
-     * @return a CompletableFuture containing the sorted section of the array
-     */
-    static CompletableFuture<int[]> asyncSort(int[] array, int from, int to) {
-        return CompletableFuture.supplyAsync(
-                () -> sortRecursive(array, from, to)
-        );
+         * Asynchronously sorts the specified portion of the input array using a parallel sorting algorithm.
+         * This method extracts a subsection of the given array, sorts it, and returns a CompletableFuture
+         * containing the sorted portion of the array.
+         *
+         * @param array the input array to extract and sort
+         * @param from  the starting index (inclusive) of the portion of the array to be sorted
+         * @param to    the ending index (exclusive) of the portion of the array to be sorted
+         * @return a CompletableFuture containing the sorted section of the array
+         */
+        static CompletableFuture<int[]> asyncSort ( int[] array, int from, int to){
+            return CompletableFuture.supplyAsync(() -> sortRecursive(array, from, to));
+        }
     }
-}
